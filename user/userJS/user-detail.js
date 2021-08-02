@@ -1,3 +1,5 @@
+const baseurl = "http://localhost:8080/api/users";
+
 $(() => {
     console.log("Everything is ready!");
     getUserById(3);
@@ -31,6 +33,38 @@ const displayUser = (user) => {
     $("#dReviewer").text(`${(user.reviewer ? "Yes" : "No")}`);
     $("#dAdmin").text(`${(user.admin ? "Yes" : "No")}`);
 }
+
+const clearDisplay = (user) => {
+    $("#dId").text("");
+    $("#dUsername").text("");
+    $("#dFirstname").text("");
+    $("#dLastname").text("");
+    $("#dPhone").text("");
+    $("#dEmail").text("");
+    $("#dReviewer").text("");
+    $("#dAdmin").text("");
+}
+
+$(() => {
+    $("#deleteId").on("click", () => {
+        xId = $("#nbr").val()
+        deleteUserById(xId);
+        clearDisplay();
+    })
+})
+
+const deleteUserById = (id) => {
+    $.ajax({
+            method: "DELETE",
+            url: `${baseurl}/${id}`
+    })
+        .done(res => {
+            console.log("Delete successful!");
+        })
+        .fail(err => {
+            console.error(err);
+        });
+};
 
 const getAllUsers = () => {
     $.getJSON(`http://localhost:8080/api/users/`)
